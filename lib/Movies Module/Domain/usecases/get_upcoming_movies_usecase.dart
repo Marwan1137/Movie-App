@@ -4,12 +4,12 @@ import 'package:movie_app/Movies%20Module/Domain/repositories/movie_repository.d
 import 'package:movie_app/core/utils/result.dart';
 
 @injectable
-class GetPopularMoviesUsecase {
+class GetUpcomingMoviesUsecase {
   final MovieRepository movieRepository;
 
-  GetPopularMoviesUsecase(this.movieRepository);
+  GetUpcomingMoviesUsecase(this.movieRepository);
 
   Future<Result<List<Movie>>> execute() async {
-    return movieRepository.getPopularMovies();
+    return movieRepository.getUpcomingMovies();
   }
 }

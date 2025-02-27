@@ -4,4 +4,5 @@ class Constants {
   static const String nowPlayingEndpoint = "/movie/now_playing";
   static const String popularMoviesEndpoint = "/movie/popular";
   static const String topRatedMoviesEndpoint = "/movie/top_rated";
+  static const String upcomingMoviesEndpoint = "/movie/upcoming";
 }

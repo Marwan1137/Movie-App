@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 @Injectable(as: ApiClient)
 class DioClient implements ApiClient {
   final Dio _dio;
-  DioClient({required String baseUrl})
+  DioClient()
       : _dio = Dio(
           BaseOptions(
             baseUrl: Constants.baseUrl,
