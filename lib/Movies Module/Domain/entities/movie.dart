@@ -7,7 +7,7 @@ class Movie extends Equatable {
   final List<int> genreIds;
   final String backdropPath;
   final double voteAverage;
-  final double releaseDate;
+  final String releaseDate;
 
   const Movie({
     required this.id,
@@ -18,7 +18,7 @@ class Movie extends Equatable {
     required this.voteAverage,
     required this.releaseDate,
   });
-
+  String getBackdropUrl() => 'https://image.tmdb.org/t/p/w500$backdropPath';
   @override
   List<Object?> get props => [
         id,

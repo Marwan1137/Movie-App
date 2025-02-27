@@ -49,4 +49,17 @@ class MovieRemoteDatasourceImpl implements MovieRemoteDatasource {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Future<List<MovieModel>> getUpcomingMovies() async {
+    try {
+      final response = await apiClient.get(Constants.upcomingMoviesEndpoint,
+          queryParameters: {'api_key': Constants.apiKey});
+      return (response['results'] as List)
+          .map((movie) => MovieModel.fromJson(movie))
+          .toList();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
