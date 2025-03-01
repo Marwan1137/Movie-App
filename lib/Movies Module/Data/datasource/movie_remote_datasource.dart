@@ -8,4 +8,6 @@ abstract class MovieRemoteDatasource {
   Future<List<MovieModel>> getTopRatedMovies();
 
   Future<List<MovieModel>> getUpcomingMovies();
+
+  Future<List<MovieModel>> searchMovies(String query);
 }

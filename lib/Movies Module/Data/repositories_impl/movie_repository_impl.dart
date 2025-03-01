@@ -49,4 +49,14 @@ class MovieRepositoryImpl implements MovieRepository {
       return Result.failure(e.toString());
     }
   }
+
+  @override
+  Future<Result<List<Movie>>> searchMovies(String query) async {
+    try {
+      final result = await remoteDatasource.searchMovies(query);
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(e.toString());
+    }
+  }
 }

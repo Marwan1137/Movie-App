@@ -4,6 +4,7 @@ import 'package:movie_app/Movies%20Module/Domain/usecases/get_now_playing_movies
 import 'package:movie_app/Movies%20Module/Domain/usecases/get_popular_movies.dart';
 import 'package:movie_app/Movies%20Module/Domain/usecases/get_top_rated_movies.dart';
 import 'package:movie_app/Movies%20Module/Domain/usecases/get_upcoming_movies_usecase.dart';
+import 'package:movie_app/Movies%20Module/Domain/usecases/search_movies_usecase.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_state.dart';
 import 'package:movie_app/core/utils/enums.dart';
 
@@ -13,12 +14,14 @@ class MoviesCubit extends Cubit<MoviesState> {
   final GetPopularMoviesUsecase getPopularMoviesUseCase;
   final GetTopRatedMoviesUsecase getTopRatedMoviesUseCase;
   final GetUpcomingMoviesUsecase getUpcomingMoviesUsecase;
+  final SearchMoviesUsecase searchMoviesUsecase;
 
   MoviesCubit(
     this.getNowPlayingMoviesUseCase,
     this.getPopularMoviesUseCase,
     this.getTopRatedMoviesUseCase,
     this.getUpcomingMoviesUsecase,
+    this.searchMoviesUsecase,
   ) : super(const MoviesState());
 
   Future<void> getNowPlayingMovies() async {
@@ -83,5 +86,32 @@ class MoviesCubit extends Cubit<MoviesState> {
         upComingMessage: result.error,
       ));
     }
+  }
+
+  Future<void> searchMovies(String query) async {
+    emit(state.copyWith(searchState: RequestState.loading));
+    print('Searching for: $query'); // Debug log
+    final result = await searchMoviesUsecase.execute(query);
+    if (result.isSuccess) {
+      print('Found ${result.data?.length} results'); // Debug log
+      emit(state.copyWith(
+        searchState: RequestState.loaded,
+        searchResults: result.data,
+      ));
+    } else {
+      print('Search error: ${result.error}'); // Debug log
+      emit(state.copyWith(
+        searchState: RequestState.error,
+        searchMessage: result.error,
+      ));
+    }
+  }
+
+  void clearSearch() {
+    emit(state.copyWith(
+      searchState: RequestState.loading,
+      searchResults: [],
+      searchMessage: '',
+    ));
   }
 }

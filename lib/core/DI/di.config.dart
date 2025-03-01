@@ -27,6 +27,8 @@ import '../../Movies%20Module/Domain/usecases/get_top_rated_movies.dart'
     as _i241;
 import '../../Movies%20Module/Domain/usecases/get_upcoming_movies_usecase.dart'
     as _i513;
+import '../../Movies%20Module/Domain/usecases/search_movies_usecase.dart'
+    as _i5;
 import '../../Movies%20Module/presentation/viewmodel/movies_cubit.dart'
     as _i400;
 import '../API/api_client.dart' as _i415;
@@ -60,11 +62,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i241.GetTopRatedMoviesUsecase(gh<_i509.MovieRepository>()));
     gh.factory<_i513.GetUpcomingMoviesUsecase>(
         () => _i513.GetUpcomingMoviesUsecase(gh<_i509.MovieRepository>()));
+    gh.factory<_i5.SearchMoviesUsecase>(
+        () => _i5.SearchMoviesUsecase(gh<_i509.MovieRepository>()));
     gh.factory<_i400.MoviesCubit>(() => _i400.MoviesCubit(
           gh<_i112.GetNowPlayingMoviesUsecase>(),
           gh<_i893.GetPopularMoviesUsecase>(),
           gh<_i241.GetTopRatedMoviesUsecase>(),
           gh<_i513.GetUpcomingMoviesUsecase>(),
+          gh<_i5.SearchMoviesUsecase>(),
         ));
     return this;
   }
