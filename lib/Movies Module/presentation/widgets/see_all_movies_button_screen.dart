@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/Movies%20Module/Domain/entities/movie.dart';
+import 'package:movie_app/Movies%20Module/presentation/screens/movie_details_screen.dart';
 
 class SeeAllButtonScreen extends StatelessWidget {
   final List<Movie> movies;
@@ -29,12 +30,24 @@ class SeeAllButtonScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: NetworkImage(movie.getBackdropUrl()),
-                      fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieDetailsScreen(
+                          movie: movie,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: NetworkImage(movie.getBackdropUrl()),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

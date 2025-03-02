@@ -75,4 +75,17 @@ class MovieRemoteDatasourceImpl implements MovieRemoteDatasource {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Future<MovieModel> getMovieDetails(int id) async {
+    try {
+      final response = await apiClient.get(
+        Constants.movieDetailsEndpoint(id),
+        queryParameters: {'api_key': Constants.apiKey, 'movie_id': id},
+      );
+      return MovieModel.fromJson(response);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movie_app/Movies%20Module/presentation/screens/movie_details_screen.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_state.dart';
 import 'package:movie_app/core/services/share_service.dart';
@@ -36,13 +37,37 @@ class _NowPlayingSliderState extends State<NowPlayingSlider> {
                   itemCount: state.upComingMovies.length,
                   itemBuilder: (context, index, _) {
                     final movie = state.upComingMovies[index];
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        image: DecorationImage(
-                          image: NetworkImage(movie.getBackdropUrl()),
-                          fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MovieDetailsScreen(
+                              movie: movie,
+                            ),
+                          ),
+                        );
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MovieDetailsScreen(
+                                movie: movie,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            image: DecorationImage(
+                              image: NetworkImage(movie.getBackdropUrl()),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     );

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/Movies%20Module/presentation/screens/movie_details_screen.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_state.dart';
 import 'package:movie_app/core/utils/enums.dart';
@@ -36,25 +37,28 @@ class _SearchScreenState extends State<SearchScreen> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (query) {
-                    _debouncer.run(() {
-                      context.read<MoviesCubit>().searchMovies(query);
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Search movies...',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        context.read<MoviesCubit>().clearSearch();
-                      },
+                child: Center(
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (query) {
+                      _debouncer.run(() {
+                        context.read<MoviesCubit>().searchMovies(query);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Search movies...',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          context.read<MoviesCubit>().clearSearch();
+                        },
+                      ),
+                      border: InputBorder.none,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                     ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
               ),
@@ -96,97 +100,109 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemCount: state.searchResults.length,
                         itemBuilder: (context, index) {
                           final movie = state.searchResults[index];
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MovieDetailsScreen(
+                                    movie: movie,
+                                  ),
                                 ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  movie.backdropPath.isEmpty
-                                      ? Container(
-                                          color: Colors.grey[300],
-                                          child: const Icon(
-                                            Icons.movie,
-                                            size: 50,
-                                            color: Colors.grey,
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    movie.backdropPath.isEmpty
+                                        ? Container(
+                                            color: Colors.grey[300],
+                                            child: const Icon(
+                                              Icons.movie,
+                                              size: 50,
+                                              color: Colors.grey,
+                                            ),
+                                          )
+                                        : Image.network(
+                                            movie.getBackdropUrl(),
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Container(
+                                                color: Colors.grey[300],
+                                                child: const Icon(
+                                                  Icons.error_outline,
+                                                  size: 50,
+                                                  color: Colors.grey,
+                                                ),
+                                              );
+                                            },
                                           ),
-                                        )
-                                      : Image.network(
-                                          movie.getBackdropUrl(),
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Container(
-                                              color: Colors.grey[300],
-                                              child: const Icon(
-                                                Icons.error_outline,
-                                                size: 50,
-                                                color: Colors.grey,
-                                              ),
-                                            );
-                                          },
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.transparent,
+                                            Colors.black.withOpacity(0.8),
+                                          ],
                                         ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Colors.transparent,
-                                          Colors.black.withOpacity(0.8),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 8,
+                                      left: 8,
+                                      right: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            movie.title,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                                size: 16,
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                movie.voteAverage
+                                                    .toStringAsFixed(1),
+                                                style: const TextStyle(
+                                                  color: Colors.white70,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 8,
-                                    left: 8,
-                                    right: 8,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          movie.title,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                              size: 16,
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              movie.voteAverage
-                                                  .toStringAsFixed(1),
-                                              style: const TextStyle(
-                                                color: Colors.white70,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );

@@ -6,4 +6,5 @@ class Constants {
   static const String topRatedMoviesEndpoint = "/movie/top_rated";
   static const String upcomingMoviesEndpoint = "/movie/upcoming";
   static const String searchMoviesEndpoint = "/search/movie";
+  static String movieDetailsEndpoint(int movieId) => "/movie/$movieId";
 }

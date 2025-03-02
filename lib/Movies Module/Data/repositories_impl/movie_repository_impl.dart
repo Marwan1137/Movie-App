@@ -59,4 +59,14 @@ class MovieRepositoryImpl implements MovieRepository {
       return Result.failure(e.toString());
     }
   }
+
+  @override
+  Future<Result<Movie>> getMovieDetails(int id) async {
+    try {
+      final result = await remoteDatasource.getMovieDetails(id);
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(e.toString());
+    }
+  }
 }

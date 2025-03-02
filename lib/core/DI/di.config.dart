@@ -11,6 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
 
 import '../../Movies%20Module/Data/datasource/movie_remote_datasource.dart'
     as _i463;
@@ -20,6 +21,8 @@ import '../../Movies%20Module/Data/repositories_impl/movie_repository_impl.dart'
     as _i188;
 import '../../Movies%20Module/Domain/repositories/movie_repository.dart'
     as _i509;
+import '../../Movies%20Module/Domain/usecases/get_movie_details_usecase.dart'
+    as _i417;
 import '../../Movies%20Module/Domain/usecases/get_now_playing_movies.dart'
     as _i112;
 import '../../Movies%20Module/Domain/usecases/get_popular_movies.dart' as _i893;
@@ -29,8 +32,6 @@ import '../../Movies%20Module/Domain/usecases/get_upcoming_movies_usecase.dart'
     as _i513;
 import '../../Movies%20Module/Domain/usecases/search_movies_usecase.dart'
     as _i5;
-import '../../Movies%20Module/presentation/viewmodel/movies_cubit.dart'
-    as _i400;
 import '../API/api_client.dart' as _i415;
 import '../API/dio_client.dart' as _i68;
 import '../services/share_service.dart' as _i474;
@@ -64,12 +65,15 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i513.GetUpcomingMoviesUsecase(gh<_i509.MovieRepository>()));
     gh.factory<_i5.SearchMoviesUsecase>(
         () => _i5.SearchMoviesUsecase(gh<_i509.MovieRepository>()));
-    gh.factory<_i400.MoviesCubit>(() => _i400.MoviesCubit(
+    gh.factory<_i417.GetMovieDetailsUsecase>(
+        () => _i417.GetMovieDetailsUsecase(gh<_i509.MovieRepository>()));
+    gh.factory<MoviesCubit>(() => MoviesCubit(
           gh<_i112.GetNowPlayingMoviesUsecase>(),
           gh<_i893.GetPopularMoviesUsecase>(),
           gh<_i241.GetTopRatedMoviesUsecase>(),
           gh<_i513.GetUpcomingMoviesUsecase>(),
           gh<_i5.SearchMoviesUsecase>(),
+          gh<_i417.GetMovieDetailsUsecase>(),
         ));
     return this;
   }
