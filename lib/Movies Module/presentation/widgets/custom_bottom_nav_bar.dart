@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/Movies Module/presentation/screens/search_screen.dart';
+import 'package:movie_app/Movies%20Module/presentation/screens/home_screen.dart';
+import 'package:movie_app/Movies%20Module/presentation/screens/wish_list_screen.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});
@@ -24,13 +26,24 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         });
 
         switch (index) {
+          case 0: // Home tab
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MovieScreen()),
+            );
+            break;
           case 1: // Search tab
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SearchScreen()),
             );
             break;
-          // Add other cases for other tabs if needed
+          case 2: // Wishlist tab
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const WishlistScreen()),
+            );
+            break;
         }
       },
       items: const [

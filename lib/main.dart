@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app/Movies%20Module/presentation/screens/home_screen.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
+import 'package:movie_app/Movies%20Module/presentation/viewmodel/wishlist_cubit.dart';
 import 'package:movie_app/core/DI/di.dart';
 
 void main() async {
@@ -16,8 +17,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<MoviesCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GetIt.I<MoviesCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => WishlistCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Movie App',

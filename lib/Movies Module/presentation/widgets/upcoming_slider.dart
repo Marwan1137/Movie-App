@@ -5,18 +5,19 @@ import 'package:get_it/get_it.dart';
 import 'package:movie_app/Movies%20Module/presentation/screens/movie_details_screen.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_state.dart';
+import 'package:movie_app/Movies%20Module/presentation/viewmodel/wishlist_cubit.dart';
 import 'package:movie_app/core/services/share_service.dart';
 import 'package:movie_app/core/utils/enums.dart';
 import 'package:movie_app/core/utils/toast_utils.dart';
 
-class NowPlayingSlider extends StatefulWidget {
-  const NowPlayingSlider({super.key});
+class UpComingSlider extends StatefulWidget {
+  const UpComingSlider({super.key});
 
   @override
-  State<NowPlayingSlider> createState() => _NowPlayingSliderState();
+  State<UpComingSlider> createState() => _UpComingSliderState();
 }
 
-class _NowPlayingSliderState extends State<NowPlayingSlider> {
+class _UpComingSliderState extends State<UpComingSlider> {
   int _currentIndex = 0;
   final ShareService _shareService = GetIt.I<ShareService>();
   final ToastUtils _toastUtils = GetIt.I<ToastUtils>();
@@ -135,17 +136,17 @@ class _NowPlayingSliderState extends State<NowPlayingSlider> {
                         const SizedBox(height: 16),
                         Row(
                           children: [
-                            ActionButton(
-                              icon: Icons.favorite_border,
-                              onPressed: () {
-                                try {
-                                  _toastUtils
-                                      .showSuccessToast('Added to Wishlist!');
-                                } catch (e) {
-                                  debugPrint('Error showing toast: $e');
-                                }
-                              },
-                            ),
+                            // ActionButton(
+                            //   icon: Icons.favorite_border,
+                            //   onPressed: () {
+                            //     try {
+                            //       _toastUtils
+                            //           .showSuccessToast('Added to Wishlist!');
+                            //     } catch (e) {
+                            //       debugPrint('Error showing toast: $e');
+                            //     }
+                            //   },
+                            // ),
                             ActionButton(
                               icon: Icons.share,
                               onPressed: () async {
@@ -160,6 +161,29 @@ class _NowPlayingSliderState extends State<NowPlayingSlider> {
                                   await _toastUtils.showErrorToast(
                                     'Failed to share movie',
                                   );
+                                }
+                              },
+                            ),
+                            // In the ActionButton for favorite, replace the existing onPressed with:
+                            ActionButton(
+                              icon: context.watch<WishlistCubit>().isInWishlist(
+                                      state.upComingMovies[_currentIndex])
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              onPressed: () {
+                                final movie =
+                                    state.upComingMovies[_currentIndex];
+                                final wishlistCubit =
+                                    context.read<WishlistCubit>();
+
+                                if (wishlistCubit.isInWishlist(movie)) {
+                                  wishlistCubit.removeFromWishlist(movie);
+                                  _toastUtils.showSuccessToast(
+                                      'Removed from Wishlist!');
+                                } else {
+                                  wishlistCubit.addToWishlist(movie);
+                                  _toastUtils
+                                      .showSuccessToast('Added to Wishlist!');
                                 }
                               },
                             ),

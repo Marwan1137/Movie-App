@@ -26,7 +26,7 @@ class MovieScreen extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  NowPlayingSlider(),
+                  UpComingSlider(),
                   SizedBox(height: 20),
                   NowPlayingSection(),
                   SizedBox(height: 20),

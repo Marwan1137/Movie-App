@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/Movies%20Module/presentation/screens/movie_details_screen.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_state.dart';
+import 'package:movie_app/Movies%20Module/presentation/widgets/custom_bottom_nav_bar.dart';
 import 'package:movie_app/core/utils/enums.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -27,6 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: const CustomBottomNavBar(),
       body: SafeArea(
         child: Column(
           children: [

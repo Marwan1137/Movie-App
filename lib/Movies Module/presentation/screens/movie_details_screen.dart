@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_app/Movies%20Module/Domain/entities/movie.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_cubit.dart';
 import 'package:movie_app/Movies%20Module/presentation/viewmodel/movies_state.dart';
+import 'package:movie_app/Movies%20Module/presentation/viewmodel/wishlist_cubit.dart';
+import 'package:movie_app/Movies%20Module/presentation/widgets/custom_bottom_nav_bar.dart';
+import 'package:movie_app/Movies%20Module/presentation/widgets/upcoming_slider.dart';
 import 'package:movie_app/core/utils/enums.dart';
+import 'package:movie_app/core/utils/toast_utils.dart';
 
-class MovieDetailsScreen extends StatelessWidget {
+class MovieDetailsScreen extends StatefulWidget {
   final Movie movie;
 
-  const MovieDetailsScreen({
+  MovieDetailsScreen({
     super.key,
     required this.movie,
   });
 
   @override
+  State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
+}
+
+class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  final ToastUtils _toastUtils = GetIt.I<ToastUtils>();
+
+  @override
   Widget build(BuildContext context) {
     // Trigger similar movies fetch when screen builds
-    context
-        .read<MoviesCubit>()
-        .getSimilarMovies(movie.genreIds, currentMovieId: movie.id);
+    context.read<MoviesCubit>().getSimilarMovies(widget.movie.genreIds,
+        currentMovieId: widget.movie.id);
 
     return Scaffold(
+      bottomNavigationBar: const CustomBottomNavBar(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             expandedHeight: 400,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -31,7 +44,7 @@ class MovieDetailsScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Image.network(
-                    movie.getBackdropUrl(),
+                    widget.movie.getBackdropUrl(),
                     fit: BoxFit.cover,
                   ),
                   // Gradient overlay
@@ -58,7 +71,7 @@ class MovieDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movie.title,
+                    widget.movie.title,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -67,6 +80,24 @@ class MovieDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
+                      ActionButton(
+                        icon: context
+                                .watch<WishlistCubit>()
+                                .isInWishlist(widget.movie)
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        onPressed: () {
+                          final wishlistCubit = context.read<WishlistCubit>();
+                          if (wishlistCubit.isInWishlist(widget.movie)) {
+                            wishlistCubit.removeFromWishlist(widget.movie);
+                            _toastUtils
+                                .showSuccessToast('Removed from Wishlist!');
+                          } else {
+                            wishlistCubit.addToWishlist(widget.movie);
+                            _toastUtils.showSuccessToast('Added to Wishlist!');
+                          }
+                        },
+                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -77,7 +108,7 @@ class MovieDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          movie.releaseDate.substring(0, 4),
+                          widget.movie.releaseDate.substring(0, 4),
                           style: TextStyle(
                             color: Colors.grey[800],
                             fontSize: 12,
@@ -92,7 +123,7 @@ class MovieDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        movie.voteAverage.toStringAsFixed(1),
+                        widget.movie.voteAverage.toStringAsFixed(1),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -110,7 +141,7 @@ class MovieDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    movie.overview,
+                    widget.movie.overview,
                     style: const TextStyle(
                       fontSize: 16,
                       height: 1.5,
