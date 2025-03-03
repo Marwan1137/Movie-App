@@ -1,4 +1,4 @@
-<h1 align="center" style="font-weight: bold;">Mvoie App 💱</h1><p align="center">A modern, cross-platform movie browsing application built with Flutter. Explore the latest movies, manage your watchlist, and enjoy a seamless user experience with clean architecture.</p><p align="center"> </p>
+<h1 align="center" style="font-weight: bold;">Movie App 💱</h1><p align="center">A modern, cross-platform movie browsing application built with Flutter. Explore the latest movies, manage your watchlist, and enjoy a seamless user experience with clean architecture.</p><p align="center"> </p>
 
 
 💻 Technologies
