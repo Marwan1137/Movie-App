@@ -46,11 +46,11 @@ Prerequisites
  4. Installation:
       - Clone the repository:
         ```bash
-              git clone https://github.com/Marwan1137/hawely.git
+              git clone https://github.com/Marwan1137/Movie-App.git
             
       - Navigate to the project:
         ```bash
-              cd hawely
+              cd Movie-App
             
 
       - Install dependencies:
